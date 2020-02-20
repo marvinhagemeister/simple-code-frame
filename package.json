@@ -6,7 +6,7 @@
 	"module": "dist/esm/index.js",
 	"types": "dist/types/index.d.ts",
 	"scripts": {
-		"test": "mocha -r ts-node/register --watch-extensions=ts 'src/*.test.ts'",
+		"test": "mocha -r ts-node/register --extension ts --recursive 'src/*.test.ts'",
 		"build": "rimraf dist/ && tsc && tsc -p tsconfig.esm.json"
 	},
 	"author": "Marvin Hagemeister <hello@marvinh.dev>",
