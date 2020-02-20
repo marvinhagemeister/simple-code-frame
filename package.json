@@ -1,0 +1,40 @@
+{
+	"name": "simple-code-frame",
+	"version": "1.0.0",
+	"description": "A tiny utility to create code frames",
+	"main": "dist/cjs/index.js",
+	"module": "dist/esm/index.js",
+	"types": "dist/types/index.d.ts",
+	"scripts": {
+		"test": "mocha -r ts-node/register --watch-extensions=ts 'src/*.test.ts'",
+		"build": "rimraf dist/ && tsc && tsc -p tsconfig.esm.json"
+	},
+	"author": "Marvin Hagemeister <hello@marvinh.dev>",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/mocha": "^7.0.1",
+		"@types/node": "^13.7.2",
+		"mocha": "^7.0.1",
+		"rimraf": "^3.0.2",
+		"ts-node": "^8.6.2",
+		"typescript": "^3.7.5"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		},
+		"./package.json": "./package.json",
+		"./": "./"
+	},
+	"files": [
+		"dist/"
+	],
+	"prettier": {
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"dependencies": {
+		"kolorist": "^1.1.0"
+	}
+}
