@@ -1,52 +1,38 @@
 import { createCodeFrame } from './index';
 import { dedent } from './dedent';
-import { stripColors, red, dim } from 'kolorist';
+import { red, dim } from 'kolorist';
 import * as t from 'assert';
 
 describe('code frame', () => {
-	describe('colors', () => {
-		it('should use colors by default', () => {
+	describe('onFrameUi', () => {
+		it('should support callback for modifying ui', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-		`;
-
-			const actual = createCodeFrame(str, {
-				startLine: 3
-			});
-
-			const expected = `${red('> ')}${dim('3 | ')}bob`;
-			t.equal(JSON.stringify(actual), JSON.stringify(expected));
-		});
-
-		it('should support no-color mode', () => {
-			const str = dedent`
-			foo
-			bar
-			bob
-		`;
+				foo
+				bar
+				bob
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 3,
-				colors: false
+				onFrameUi: input => {
+					return input
+						.replace('>', red('>'))
+						.replace(/(\d+)\s+\|/, (_, n) => dim(n + ' |'));
+				}
 			});
 
-			const expected = dedent`
-			> 3 | bob
-		`;
-
-			t.equal(actual, expected);
+			const expected = `${red('>')} ${dim('3 |')} bob`;
+			t.equal(JSON.stringify(actual), JSON.stringify(expected));
 		});
 	});
 
 	describe('linesBefore', () => {
 		it('should support linesBefore', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-		`;
+				foo
+				bar
+				bob
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 3,
@@ -54,19 +40,19 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
-			  2 | bar
-			> 3 | bob
-		`;
+				  2 | bar
+				> 3 | bob
+			`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 
 		it('should limit linesBefore', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-		`;
+				foo
+				bar
+				bob
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 3,
@@ -74,22 +60,22 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
-			  1 | foo
-			  2 | bar
-			> 3 | bob
-		`;
+				  1 | foo
+				  2 | bar
+				> 3 | bob
+			`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 	});
 
 	describe('linesAfter', () => {
 		it('should support linesAfter', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-		`;
+				foo
+				bar
+				bob
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 2,
@@ -101,16 +87,16 @@ describe('code frame', () => {
 			  3 | bob
 		`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 
 		it('should limit linesAfter', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-			boof
-		`;
+				foo
+				bar
+				bob
+				boof
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 2,
@@ -118,23 +104,23 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
-			> 2 | bar
-			  3 | bob
-			  4 | boof
-		`;
+				> 2 | bar
+				  3 | bob
+				  4 | boof
+			`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 	});
 
 	describe('column markers', () => {
 		it('should support column markers', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-			boof
-		`;
+				foo
+				bar
+				bob
+				boof
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 2,
@@ -142,20 +128,20 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
-			> 2 | bar
-			    | ^
-		`;
+				> 2 | bar
+				    | ^
+			`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 
 		it('should support column markers with linesAfter', () => {
 			const str = dedent`
-			foo
-			bar
-			bob
-			boof
-		`;
+				foo
+				bar
+				bob
+				boof
+			`;
 
 			const actual = createCodeFrame(str, {
 				startLine: 2,
@@ -164,13 +150,13 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
-			> 2 | bar
-			    | ^
-			  3 | bob
-			  4 | boof
-		`;
+				> 2 | bar
+				    | ^
+				  3 | bob
+				  4 | boof
+			`;
 
-			t.equal(stripColors(actual), expected);
+			t.equal(actual, expected);
 		});
 	});
 });
