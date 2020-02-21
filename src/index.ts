@@ -9,7 +9,7 @@ export interface Options {
 }
 
 export function createCodeFrame(text: string, options: Options) {
-	const { linesBefore = 0, linesAfter = 0, onFrameUi } = options;
+	const { linesBefore = 0, linesAfter = 0, onFrameUi, startColumn } = options;
 	const lines = text.split('\n');
 
 	// The original range that's marked by the user
@@ -36,8 +36,8 @@ export function createCodeFrame(text: string, options: Options) {
 	});
 
 	// Insert cursor lines if column ranges were specified
-	if (options.startColumn !== undefined) {
-		let message = `   ${' '.repeat(digits)}| ^`;
+	if (startColumn !== undefined) {
+		let message = `   ${' '.repeat(digits)}| ${' '.repeat(startColumn)}^`;
 		message = onFrameUi ? onFrameUi(message) : message;
 		slice.splice(Math.max(0, markedStart + 1 - startLine), 0, message);
 	}

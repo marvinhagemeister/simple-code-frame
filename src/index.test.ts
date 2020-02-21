@@ -135,6 +135,27 @@ describe('code frame', () => {
 			t.equal(actual, expected);
 		});
 
+		it('should support column markers #2', () => {
+			const str = dedent`
+				foo
+				bar
+				bob
+				boof
+			`;
+
+			const actual = createCodeFrame(str, {
+				startLine: 2,
+				startColumn: 2
+			});
+
+			const expected = dedent`
+				> 2 | bar
+				    |   ^
+			`;
+
+			t.equal(actual, expected);
+		});
+
 		it('should support column markers with linesAfter', () => {
 			const str = dedent`
 				foo
