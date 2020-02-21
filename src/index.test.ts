@@ -13,15 +13,22 @@ describe('code frame', () => {
 			`;
 
 			const actual = createCodeFrame(str, {
-				startLine: 3,
+				startLine: 2,
+				startColumn: 2,
 				onFrameUi: input => {
 					return input
 						.replace('>', red('>'))
-						.replace(/(\d+)\s+\|/, (_, n) => dim(n + ' |'));
+						.replace('^', red('^'))
+						.replace(/(\d*\s+\|)/, match => dim(match));
 				}
 			});
 
-			const expected = `${red('>')} ${dim('3 |')} bob`;
+			const expected = dedent`
+				  ${dim('1 |')} foo
+				${red('>')} ${dim('2 |')} bar
+				${dim('    |')}  ${red('^')}
+				  ${dim('3 |')} bob
+			`;
 			t.equal(JSON.stringify(actual), JSON.stringify(expected));
 		});
 	});
@@ -29,19 +36,20 @@ describe('code frame', () => {
 	describe('linesBefore', () => {
 		it('should support linesBefore', () => {
 			const str = dedent`
+				fooooo
 				foo
 				bar
 				bob
 			`;
 
 			const actual = createCodeFrame(str, {
-				startLine: 3,
+				startLine: 4,
 				linesBefore: 1
 			});
 
 			const expected = dedent`
-				  2 | bar
-				> 3 | bob
+				  3 | bar
+				> 4 | bob
 			`;
 
 			t.equal(actual, expected);
@@ -75,6 +83,7 @@ describe('code frame', () => {
 				foo
 				bar
 				bob
+				baaz
 			`;
 
 			const actual = createCodeFrame(str, {
@@ -83,6 +92,7 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
+			  1 | foo
 			> 2 | bar
 			  3 | bob
 		`;
@@ -104,6 +114,7 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
+				  1 | foo
 				> 2 | bar
 				  3 | bob
 				  4 | boof
@@ -128,8 +139,11 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
+				  1 | foo
 				> 2 | bar
 				    | ^
+				  3 | bob
+				  4 | boof
 			`;
 
 			t.equal(actual, expected);
@@ -149,8 +163,11 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
+				  1 | foo
 				> 2 | bar
-				    |   ^
+				    |  ^
+				  3 | bob
+				  4 | boof
 			`;
 
 			t.equal(actual, expected);
@@ -171,6 +188,7 @@ describe('code frame', () => {
 			});
 
 			const expected = dedent`
+				  1 | foo
 				> 2 | bar
 				    | ^
 				  3 | bob
