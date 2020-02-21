@@ -1,4 +1,4 @@
-import { createCodeFrame } from './index';
+import { createCodeFrame } from './codeFrame';
 import { dedent } from './dedent';
 import { red, dim } from 'kolorist';
 import * as t from 'assert';
