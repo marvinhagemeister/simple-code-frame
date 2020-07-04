@@ -11,6 +11,10 @@
 		"build": "rimraf dist/ && microbundle build --raw --no-compress && cp dist/code-frame.modern.js dist/code-frame.modern.mjs"
 	},
 	"author": "Marvin Hagemeister <hello@marvinh.dev>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/marvinhagemeister/simple-code-frame.git"
+	},
 	"license": "MIT",
 	"devDependencies": {
 		"@types/mocha": "^7.0.1",
