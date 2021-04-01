@@ -22,7 +22,7 @@ export function createCodeFrame(
 	lineNum: number,
 	columnNum: number,
 
-	{ before = 3, after = 3, colors = true }: Options = {}
+	{ before = 2, after = 3, colors = true }: Options = {}
 ) {
 	const lines = text.split('\n');
 
