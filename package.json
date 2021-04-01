@@ -1,6 +1,6 @@
 {
 	"name": "simple-code-frame",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "A tiny utility to create code frames",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
