@@ -1,12 +1,13 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"target": "ES2020",
+		"target": "ES2019",
 		"module": "CommonJS",
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"allowJs": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"outDir": "dist/cjs/"
 	},
 	"files": ["./src/index.ts"]
 }
