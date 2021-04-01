@@ -8,7 +8,8 @@
 	"source": "src/index.ts",
 	"scripts": {
 		"test": "TS_NODE_LOG_ERROR=true mocha -r ts-node/register --extension ts,tsx 'tests/**/*.test.ts'",
-		"build": "rimraf dist/ && tsc && tsc -p tsconfig.esm.json && cp dist/esm/index.js dist/esm/index.mjs && check-export-map"
+		"build": "rimraf dist/ && tsc && tsc -p tsconfig.esm.json && cp dist/esm/index.js dist/esm/index.mjs && check-export-map",
+		"prepublishOnly": "npm run build"
 	},
 	"author": "Marvin Hagemeister <hello@marvinh.dev>",
 	"repository": {
