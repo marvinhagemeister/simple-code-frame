@@ -1,5 +1,6 @@
 import { createCodeFrame } from '../src';
 import { promises as fs } from 'fs';
+import * as kl from 'kolorist';
 import * as path from 'path';
 import { strict as t } from 'assert';
 
@@ -9,7 +10,7 @@ const runTest = async (name: string, fn: (input: string) => string) => {
 	const expected = await fs.readFile(path.join(dir, 'expected.txt'), 'utf-8');
 
 	const actual = fn(input).slice(0, -1);
-	t.equal(actual, expected);
+	t.equal(kl.stripColors(actual), expected);
 };
 
 it('normalize tab indentation', async () => {

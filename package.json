@@ -41,5 +41,7 @@
 		"singleQuote": true,
 		"arrowParens": "avoid"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"kolorist": "^1.4.0"
+	}
 }
