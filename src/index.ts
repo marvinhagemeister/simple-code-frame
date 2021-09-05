@@ -11,6 +11,7 @@ export interface Options {
 	before?: number;
 	after?: number;
 	colors?: boolean;
+	maxWidth?: number;
 }
 
 /**
@@ -22,7 +23,7 @@ export function createCodeFrame(
 	lineNum: number,
 	columnNum: number,
 
-	{ before = 2, after = 3, colors = true }: Options = {}
+	{ before = 2, after = 3, colors = true, maxWidth = 0 }: Options = {}
 ) {
 	const lines = text.split('\n');
 
@@ -36,31 +37,75 @@ export function createCodeFrame(
 	const maxLineNum = String(end).length;
 	const padding = ' '.repeat(maxLineNum);
 
+	// Normalize all indentation (=tabs) to use 2 spaces. We need to
+	// apply the difference to the marker position to move it back in
+	// place.
+	const spaceLines: string[] = [];
+	let maxLineLen = 0;
+	for (let i = start; i < end; i++) {
+		const line = tabs2Spaces(lines[i]);
+		spaceLines.push(line);
+
+		if (line.length > maxLineLen) maxLineLen = line.length;
+	}
+
+	const activeLine = spaceLines[lineNum - start];
+	// Move marker into correct place by taking the amount of
+	// normalized tabs into account
+	const count = Math.max(
+		0,
+		activeLine.length - lines[lineNum].length + columnNum
+	);
+
+	const maxLensWidth = maxWidth - '> '.length - padding.length - ' | '.length;
+
+	let left = 0;
+	let right = maxLensWidth;
+	if (maxWidth > 0) {
+		const half = Math.floor(maxLensWidth / 2);
+		let winLeft = count - half;
+		if (winLeft > 0) {
+			let winRight = count + half - 1;
+			left = winLeft;
+			right = winRight;
+
+			if (winRight > maxLensWidth) {
+				const offset = Math.min(0, winRight - maxLensWidth);
+				left -= offset;
+				right -= offset;
+			}
+		}
+	}
+
 	const sep = kl.dim('|');
 	let out = '';
 
-	for (let i = start; i < end; i++) {
-		const line = lines[i];
-		const currentLine = kl.dim((padding + (i + 1)).slice(-maxLineNum));
+	for (let i = 0; i < spaceLines.length; i++) {
+		const line = spaceLines[i];
+		const currentLine = kl.dim((padding + (i + start + 1)).slice(-maxLineNum));
+		let formatted = line;
 
-		// Normalize all indentation (=tabs) to use 2 spaces. We need to
-		// apply the difference to the marker position to move it back in
-		// place.
-		const normalized = tabs2Spaces(lines[i]);
+		if (maxWidth > 0) {
+			formatted = formatted.slice(left, Math.min(right, line.length));
+
+			if (left > 0) {
+				formatted = '…' + formatted;
+			}
+
+			if (line.length > right) {
+				formatted += '…';
+			}
+		}
 
 		// Line where the error occured
-		if (i === lineNum) {
-			out += kl.red('>') + ` ${currentLine} ${sep} ${normalized}\n`;
+		if (i === lineNum - start) {
+			out += kl.red('>') + ` ${currentLine} ${sep} ${formatted}\n`;
 
-			// Move marker into correct place by taking the amount of
-			// normalized tabs into account
-			const count = Math.max(0, normalized.length - line.length + columnNum);
-
-			out += `  ${padding} ${sep} ${' '.repeat(count)}${kl.bold(
+			out += `  ${padding} ${sep} ${' '.repeat(count - left)}${kl.bold(
 				kl.red('^')
 			)}\n`;
 		} else {
-			out += `  ${currentLine} ${sep} ${normalized}\n`;
+			out += `  ${currentLine} ${sep} ${formatted}\n`;
 		}
 	}
 
