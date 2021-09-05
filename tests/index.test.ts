@@ -21,6 +21,24 @@ it('should indent column number', async () => {
 	await runTest('column-indent', input => createCodeFrame(input, 9, 2));
 });
 
+it('should apply ellipsis to long lines to both ends', async () => {
+	await runTest('long-line', input =>
+		createCodeFrame(input, 1, 17726, { maxWidth: 50 })
+	);
+});
+
+it('should apply ellipsis to long lines to start', async () => {
+	await runTest('long-line-start-2', input =>
+		createCodeFrame(input, 1, 4, { maxWidth: 50 })
+	);
+});
+
+it('should apply ellipsis to long lines #2', async () => {
+	await runTest('long-line-end', input =>
+		createCodeFrame(input, 1, 17751, { maxWidth: 50 })
+	);
+});
+
 describe('lines before', () => {
 	it('support lines before', async () => {
 		await runTest('lines-before', input =>
