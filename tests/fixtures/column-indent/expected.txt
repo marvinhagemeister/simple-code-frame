@@ -1,6 +1,6 @@
-   8 | boof2
-   9 | foo3
-> 10 | bar3
-     |   ^
-  11 | bob3
-  12 | boof3
+   8 │ boof2
+   9 │ foo3
+▶ 10 │ bar3
+     │   ▲
+  11 │ bob3
+  12 │ boof3
