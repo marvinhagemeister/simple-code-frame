@@ -45,6 +45,6 @@
 		"arrowParens": "avoid"
 	},
 	"dependencies": {
-		"kolorist": "^1.4.0"
+		"kolorist": "^1.6.0"
 	}
 }
