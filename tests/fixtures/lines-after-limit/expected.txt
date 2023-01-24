@@ -1,5 +1,5 @@
-  1 | foo
-> 2 | bar
-    | ^
-  3 | bob
-  4 | boof
+  1 │ foo
+▶ 2 │ bar
+    │ ▲
+  3 │ bob
+  4 │ boof

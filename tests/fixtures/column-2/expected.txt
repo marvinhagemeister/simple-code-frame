@@ -1,4 +1,4 @@
-  2 | bar
-  3 | bob
-> 4 | boof
-    |   ^
+  2 │ bar
+  3 │ bob
+▶ 4 │ boof
+    │   ▲

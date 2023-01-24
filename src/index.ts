@@ -77,7 +77,7 @@ export function createCodeFrame(
 		}
 	}
 
-	const sep = kl.dim('|');
+	const sep = kl.dim('│');
 	let out = '';
 
 	for (let i = 0; i < spaceLines.length; i++) {
@@ -99,10 +99,10 @@ export function createCodeFrame(
 
 		// Line where the error occured
 		if (i === lineNum - start) {
-			out += kl.red('>') + ` ${currentLine} ${sep} ${formatted}\n`;
+			out += kl.red('▶') + ` ${currentLine} ${sep} ${formatted}\n`;
 
 			out += `  ${padding} ${sep} ${' '.repeat(count - left)}${kl.bold(
-				kl.red('^')
+				kl.red('▲')
 			)}\n`;
 		} else {
 			out += `  ${currentLine} ${sep} ${formatted}\n`;
